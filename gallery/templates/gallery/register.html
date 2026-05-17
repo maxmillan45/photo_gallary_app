@@ -1,0 +1,88 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}Register - Photo Gallery{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
+        <div>
+            <div class="flex justify-center">
+                <i class="fas fa-camera text-blue-600 text-5xl"></i>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Create your account
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Or
+                <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500">
+                    sign in to existing account
+                </a>
+            </p>
+        </div>
+        
+        <form class="mt-8 space-y-6" method="POST">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                <strong>Please correct the following errors:</strong>
+                <ul class="mt-2">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-gray-700">Username *</label>
+                    <input type="text" name="username" id="id_username" required class="form-input mt-1" value="{{ form.username.value|default:'' }}">
+                    {% if form.username.help_text %}
+                    <p class="text-xs text-gray-500 mt-1">{{ form.username.help_text }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="id_first_name" class="block text-sm font-medium text-gray-700">First Name *</label>
+                    <input type="text" name="first_name" id="id_first_name" required class="form-input mt-1" value="{{ form.first_name.value|default:'' }}">
+                </div>
+                
+                <div>
+                    <label for="id_last_name" class="block text-sm font-medium text-gray-700">Last Name *</label>
+                    <input type="text" name="last_name" id="id_last_name" required class="form-input mt-1" value="{{ form.last_name.value|default:'' }}">
+                </div>
+                
+                <div>
+                    <label for="id_email" class="block text-sm font-medium text-gray-700">Email *</label>
+                    <input type="email" name="email" id="id_email" required class="form-input mt-1" value="{{ form.email.value|default:'' }}">
+                </div>
+                
+                <div>
+                    <label for="id_password1" class="block text-sm font-medium text-gray-700">Password *</label>
+                    <input type="password" name="password1" id="id_password1" required class="form-input mt-1">
+                    {% if form.password1.help_text %}
+                    <p class="text-xs text-gray-500 mt-1">{{ form.password1.help_text }}</p>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="id_password2" class="block text-sm font-medium text-gray-700">Confirm Password *</label>
+                    <input type="password" name="password2" id="id_password2" required class="form-input mt-1">
+                </div>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn-primary w-full">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

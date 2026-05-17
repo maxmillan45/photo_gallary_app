@@ -1,0 +1,53 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}Login - Photo Gallery{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
+        <div>
+            <div class="flex justify-center">
+                <i class="fas fa-camera text-blue-600 text-5xl"></i>
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Sign in to your account
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Or
+                <a href="{% url 'register' %}" class="font-medium text-blue-600 hover:text-blue-500">
+                    create a new account
+                </a>
+            </p>
+        </div>
+        
+        <form class="mt-8 space-y-6" method="POST">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+                <strong>Invalid credentials!</strong>
+                <p class="mt-1">Please check your username and password and try again.</p>
+            </div>
+            {% endif %}
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" name="username" id="id_username" required class="form-input mt-1" placeholder="Enter your username">
+                </div>
+                
+                <div>
+                    <label for="id_password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" name="password" id="id_password" required class="form-input mt-1" placeholder="Enter your password">
+                </div>
+            </div>
+            
+            <div>
+                <button type="submit" class="btn-primary w-full">
+                    <i class="fas fa-sign-in-alt"></i> Sign in
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
