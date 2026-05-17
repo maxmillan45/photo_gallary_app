@@ -67,7 +67,7 @@ def change_password(request):
         form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Keep user logged in
+            update_session_auth_hash(request, user)
             messages.success(request, 'Your password has been changed successfully!')
             return redirect('profile')
         else:
@@ -81,9 +81,12 @@ def change_password(request):
 def home(request):
     """Display homepage with all photos"""
     photos = Photo.objects.all().order_by('-created_at')
+    
+    # Get all unique tags
     tags = set()
     for photo in photos:
-        tags.update(photo.get_tags_list())
+        for tag in photo.get_tags_list():
+            tags.add(tag)
     
     # Add user interaction status for logged in users
     if request.user.is_authenticated:
@@ -116,7 +119,8 @@ def photo_detail(request, photo_id):
     all_tags = set()
     all_photos = Photo.objects.all()
     for p in all_photos:
-        all_tags.update(p.get_tags_list())
+        for tag in p.get_tags_list():
+            all_tags.add(tag)
     
     return render(request, 'gallery/photo_detail.html', {
         'photo': photo,
@@ -217,7 +221,8 @@ def filter_by_tag(request, tag):
     # Get all unique tags
     all_tags = set()
     for photo in Photo.objects.all():
-        all_tags.update(photo.get_tags_list())
+        for t in photo.get_tags_list():
+            all_tags.add(t)
     
     # Add user interaction status for logged in users
     if request.user.is_authenticated:
